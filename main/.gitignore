@@ -1,0 +1,5 @@
+test/
+train/
+train_KDEF/
+trainset/
+*.mat
