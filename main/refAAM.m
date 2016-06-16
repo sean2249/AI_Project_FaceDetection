@@ -54,7 +54,7 @@ end
 % Exactly the same applies for the texture parameters.
 flag_precompute = 1;
 if flag_train
-    flag_precompute = 1;
+    flag_precompute = 1;    
 end
 cAAM.shape{1}.n = 10;
 cAAM.shape{2}.n = 3;
@@ -103,12 +103,16 @@ num_of_iter = [50 50];
 load initializations_LFPW
 
 %% get images and ground truth shapes
-names1 = dir('./testset/*.png');
-names2 = dir('./testset/*.pts');
 
-gg = 1; % choose image gg to fit
-input_image = imread(['./testset/' names1(gg).name]);
-pts = read_shape(['./testset/' names2(gg).name], cAAM.num_of_points);
+folder = './tzimiro_ICCV2013_code/testset/';
+% names1 = dir('./testset/*.png');
+% names2 = dir('./testset/*.pts');
+names1 = dir(strcat(folder, '*.png'));
+
+gg = 100; % choose image gg to fit
+input_image = imread(strcat(folder, names1(gg).name));
+% input_image = imread(['./testset/' names1(gg).name]);
+% pts = read_shape(['./testset/' names2(gg).name], cAAM.num_of_points);
 if size(input_image, 3) == 3
     input_image = double(rgb2gray(input_image));
 else
@@ -116,8 +120,8 @@ else
 end
 
 %% ground_truth
-gt_s = (pts);
-face_size = (max(gt_s(:,1)) - min(gt_s(:,1)) + max(gt_s(:,2)) - min(gt_s(:,2)))/2;
+% gt_s = (pts);
+% face_size = (max(gt_s(:,1)) - min(gt_s(:,1)) + max(gt_s(:,2)) - min(gt_s(:,2)))/2;
 
 %% initialization
 s0 = cAAM.shape{1}.s0;
@@ -125,7 +129,7 @@ current_shape = scl(gg)*reshape(s0, cAAM.num_of_points, 2) + repmat(trans(gg, :)
 input_image = imresize(input_image, 1/scl(gg));
 current_shape = (1/scl(gg))*(current_shape);
 % uncomment to see initialization
-% figure;imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize', 11);
+figure;imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize', 11);
 
 %% Fitting an AAM using Fast-SIC algorithm
 sc = 2.^(cAAM.scales-1);
@@ -192,10 +196,10 @@ end
 
 figure;imshow(input_image, []); hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize',11);
 current_shape = current_shape*scl(gg);
-
+    
 %% error metric used, a value of approx 0.03 shows very good fitting
-pt_pt_err1 = [];
-for ii = 1:cAAM.num_of_points
-    pt_pt_err1(ii) =  norm(gt_s(ii,:) - current_shape(ii,:));
-end
-pt_pt_err = mean(pt_pt_err1)/face_size
+% pt_pt_err1 = [];
+% for ii = 1:cAAM.num_of_points
+%     pt_pt_err1(ii) =  norm(gt_s(ii,:) - current_shape(ii,:));
+% end
+% pt_pt_err = mean(pt_pt_err1)/face_size
