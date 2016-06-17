@@ -25,7 +25,7 @@ option = '-t 0 -d 2 -g 2 -c 1 -e 0.1';
 model = svmtrain(double(label(trainInd)), double(feature(trainInd,:)), option);
 
 [predicted_label, accuracy, ~] = svmpredict(double(label(valInd)), double(feature(valInd,:)), model);
-
+[C, order] = confusionmat( double(label(valInd)), predicted_label)
 % C = strsplit(option, {' ','-','.'});
 % par = strcat(C{:});
 % save(['model_MIX_' par '.mat'],'model_MIX');
