@@ -1,7 +1,7 @@
 %% Fundemental Setting 
 clear all; close all;
 
-projectName = 'gabor_W_4_O_90_KDEF';
+projectName = 'gabor_MIX2_KDEF';
 training = imageSet('train_KDEF', 'recursive');
 
 % imgSize = [280,180];
@@ -19,9 +19,9 @@ training = imageSet('train_KDEF', 'recursive');
 % cellSize = [8 8];
 % blockSize = [2 2];
 % flag4Cascade = 0;
-wavelength = 4;
+wavelength = 8;
 orientation = 90;
-
+scale = 1/2;
 % ========= End ==========
 
 sum = 0; for i=1:length(training),sum = sum + training(i).Count; end
@@ -37,14 +37,19 @@ for idx=1:length(training)
 % _____HOG_____
 %            tmp = extractHOGFeatures(img, 'CellSize', cellSize);
 % _____Gabor_____
-%             scaleRatio = 1/2;
-%             img = imresize(img,scaleRatio);
-%             I = rgb2gray(img);
-%             [mag, phase] = imgaborfilt(I, wavelength, orientation);
-%             tmp = mag(:)';
+    feature = [];
+    for wavelength = 2.5:2.5:12.5
+        for orientation = 0:30:150
+            tmp = gaborExtract(img, wavelength, orientation, scale);
+            s1 = std(tmp);
+            s2 = mean(tmp);
+            s3 = median(tmp);
+            feature =[feature s1 s2 s3];
+        end
+    end
 % ____ Haar Like____
 % ================== End ====================
-           trainingFeature = [trainingFeature;tmp];
+           trainingFeature = [trainingFeature;feature];
            trainingLabel{featureCount} = training(idx).Description;
            featureCount = featureCount +1;
 %        end
@@ -55,6 +60,8 @@ save(strcat(projectName,'_features.mat'), 'trainingFeature');
 save(strcat(projectName,'_label.mat'), 'trainingLabel');
 
 %% Classifier
-faceClassifier = fitcecoc(trainingFeature, trainingLabel);
-save(strcat('classifier', projectName, '.mat'), 'faceClassifier');
+% faceClassifier = fitcecoc(trainingFeature, trainingLabel);
+% save(strcat('classifier', projectName, '.mat'), 'faceClassifier');
+
+[model,predict] = trSVM(projectName, trainingFeature, trainingLabel);
 
