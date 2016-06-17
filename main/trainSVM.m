@@ -1,3 +1,5 @@
+clear;
+
 load('KDEF_features.mat');
 load('KDEF_label.mat');
 % load('gabor_W_4_O_90_KDEF_features.mat');
@@ -12,8 +14,10 @@ for i=1:size(trainingLabel,2)
     label(i, 1) = M(trainingLabel{i});
 end
 
+% setting validation index,
+validationSize = 80;
 randInd = randperm(size(label,1));
-trainRainge = size(label)-100;
+trainRainge = size(label)-validationSize;
 trainInd = randInd(1:trainRainge);
 valInd = randInd(trainRainge+1:end);
 
