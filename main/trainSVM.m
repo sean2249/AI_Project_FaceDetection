@@ -1,21 +1,21 @@
 % clear;
 
-load('gabor_MIXwithMeanStdMedian_KDEF_label.mat');
-load('gabor_MIXwithMeanStdMedian_KDEF_features.mat');
+% load('gabor_MIXwithMeanStdMedian_KDEF_label.mat');
+% load('gabor_MIXwithMeanStdMedian_KDEF_features.mat');
 
 feature = trainingFeature;
 
 cators = unique(trainingLabel);
-label = zeros( size(trainingLabel,2), 1 );
-M = containers.Map(cators,1:size(cators,2));
-for i=1:size(trainingLabel,2)
+label = zeros( length(trainingLabel), 1 );
+M = containers.Map(cators,1:length(cators));
+for i=1:length(trainingLabel)
     label(i, 1) = M(trainingLabel{i});
 end
 
 % setting validation index,
 validationSize = 80;
-randInd = randperm(size(label,1));
-trainRainge = size(label)-validationSize;
+randInd = randperm(length(label));
+trainRainge = length(label)-validationSize;
 trainInd = randInd(1:trainRainge);
 valInd = randInd(trainRainge+1:end);
 
