@@ -1,9 +1,7 @@
-clear;
+% clear;
 
-load('KDEF_features.mat');
-load('KDEF_label.mat');
-% load('gabor_W_4_O_90_KDEF_features.mat');
-% load('gabor_W_4_O_90_KDEF_label.mat');
+load('gabor_MIXwithMeanStdMedian_KDEF_label.mat');
+load('gabor_MIXwithMeanStdMedian_KDEF_features.mat');
 
 feature = trainingFeature;
 

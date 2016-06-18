@@ -3,7 +3,7 @@ clear all; close all;
 
 addpath('./myFunction')
 
-projectName = 'gabor_MIXwithMeanStdMedian_KDEF';
+projectName = 'gabor_AllWavelengthOrientation_KDEF';
 training = imageSet('train_KDEF', 'recursive');
 
 % imgSize = [280,180];
@@ -45,9 +45,6 @@ for idx=1:length(training)
     for wavelength = 2.5:2.5:12.5
         for orientation = 0:30:150
             tmp = gaborExtract(img, wavelength, orientation, scale);
-            s1 = std(tmp);
-            s2 = mean(tmp);
-            s3 = median(tmp);
             feature =[feature s1 s2 s3];
         end
     end
