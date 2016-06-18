@@ -8,3 +8,4 @@ am_tools_win_v3/
 EigenFace/
 *.zip
 PR_face_detection/
+.DS_Store

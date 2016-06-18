@@ -3,3 +3,4 @@ train/
 train_KDEF/
 trainset/
 *.mat
+.DS_Store
