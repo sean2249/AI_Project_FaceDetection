@@ -1,48 +1,54 @@
-cam = webcam
+function imgCrop = startCam(duration, count)
+% For capture face from webcam
+% Default: duration = 0.5, count = 4
+if nargin<1, duration = 0.5; count = 4; end
+if nargin<2, count = 4; end
+cam = webcam;
 preview(cam);
 faceDetector = vision.CascadeObjectDetector;
 
+%% 
+% count = 5;
+imgTotal = snapshot(cam);
+num = count;
+while num>1
+   img = snapshot(cam);  
+   imgTotal =cat(4,imgTotal,img);
+%    figure; imshow(img)
+   pause(duration);
+   num = num -1;
+end
+closePreview(cam); clear cam; 
 %%
-img = snapshot(cam);
+for num=1:size(imgTotal,4)
+   imageTitle= strcat(num2str(num), ' Image');
+   subplot(ceil(count/2),2,num); imshow(imgTotal(:,:,:,num));
+   title(imageTitle); 
+end
+choose = 0;
+while ~and(choose<=size(imgTotal,4), choose>0)
+    choose = input('Choose the photo you want: ');
+end
+img = imgTotal(:,:,:,choose);
+close all;
+%%
 bboxes = step(faceDetector, img);
 IFaces = insertObjectAnnotation(img, 'rectangle', bboxes, 'Face');
-figure, imshow(IFaces), title('Detected faces');
+figure, subplot(1,2,1), imshow(IFaces), title('Detected faces');
 
 %%
-idx =[ bboxes(1), bboxes(1)+bboxes(3), bboxes(2), bboxes(2)+bboxes(4) ] ;
-imgCrop = img(idx(3):idx(4), idx(1):idx(2),:);
-imshow(imgCrop);
-%% 
-
-
-
-
-
-
-%%
-% %%
-% for idx =1:100
-%    % Acquire a single image.
-%    rgbImage = snapshot(cam);
-%    
-%   % Convert RGB to grayscale.
-% %    grayImage = rgb2gray(rgbImage);
-% 
-%    % Find circles.
-% %    [centers, radii] = imfindcircles(grayImage, [60 80]);
-% 
-%    % Display the image.
-% %    imshow(rgbImage);
-% %     rgbImage = imresize(rgbImage, 1/5);
-% %    [hog, visu] = extractHOGFeatures(rgbImage);    
-% %    plot(visu)
-%     bboxes = step(faceDetector, rgbImage);
-%     IFaces = insertObjectAnnotation(rgbImage, 'rectangle', bboxes, 'Face');
-%    figure, imshow(IFaces), title('Detected faces');
-% 
-% 
-%    hold on;
-% %    imshow(rgbImage); 
-% %    viscircles(centers, radii);
-%    drawnow
-% end
+if ~isempty(bboxes)
+    idx = 1;
+    if size(bboxes,1) ~=1
+        area = 0;
+        for i=1:size(bboxes,1)
+            tmp = bboxes(i,3) * bboxes(i,4);
+            if tmp>area, idx =i; area = tmp; end
+        end
+    end
+        idx =[ bboxes(idx,1), bboxes(idx,1)+bboxes(idx,3), bboxes(idx,2), bboxes(idx,2)+bboxes(idx,4) ] ;
+        imgCrop = img(idx(3):idx(4), idx(1):idx(2),:);
+        subplot(1,2,2);imshow(imgCrop);
+else
+   fprintf('No face detect\n'); 
+end

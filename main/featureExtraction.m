@@ -8,12 +8,12 @@ training = imageSet('train_KDEF', 'recursive');
 
 % imgSize = [280,180];
 %% Test 
-% img = read(training(1),1);
+img = read(training(1),1);
 % img = imresize((img), imgSize, 'bicubic');
-% img = extractHOGFeatures(img, 'CellSize', cellSize);
-% [img, visu] = extractHOGFeatures(img,'CellSize', cellSize);
-% % imshow(img); hold on;plot(visu);
-% HOGsize = size(img,2);         
+img = extractHOGFeatures(img, 'CellSize', cellSize);
+[img, visu] = extractHOGFeatures(img,'CellSize', cellSize);
+% imshow(img); hold on;plot(visu);
+HOGsize = size(img,2);         
 
 %% Extract Feature
 
@@ -21,7 +21,7 @@ training = imageSet('train_KDEF', 'recursive');
 cellSize = [8 8];
 blockSize = [2 2];
 flag4Cascade = 0;
-size = [762 562];
+% size = [762 562];
 % wavelength = 8;
 % orientation = 90;
 % scale = 1/2;
@@ -49,7 +49,7 @@ for idx=1:length(training)
        
 %============= Feature Extraction===========
 % _____HOG_____
-           img = imresize(img, size);
+%            img = imresize(img, size);
            feature = extractHOGFeatures(img, 'CellSize', cellSize);
 % _____Gabor_____
 %     feature = [];
