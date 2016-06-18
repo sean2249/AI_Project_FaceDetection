@@ -39,6 +39,14 @@ for idx=1:length(training)
     fprintf('%d- Extraction\n', idx);
     for num=1:training(idx).Count
        img = read(training(idx),num);
+% =========== Preprocessing ============
+
+    fileName = training(idx).name;
+      if (fileName(7)=='S')
+%           xxx = input(fileName);
+          label = fileName(5:6);
+      end
+       
 %============= Feature Extraction===========
 % _____HOG_____
            img = imresize(img, size);
