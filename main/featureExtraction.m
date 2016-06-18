@@ -1,7 +1,9 @@
 %% Fundemental Setting 
 clear all; close all;
 
-projectName = 'gabor_MIX2_KDEF';
+addpath('./myFunction')
+
+projectName = 'gabor_MIXwithMeanStdMedian_KDEF';
 training = imageSet('train_KDEF', 'recursive');
 
 % imgSize = [280,180];
@@ -30,6 +32,8 @@ trainingFeature = [];
 featureCount=1;
 faceDetector = vision.CascadeObjectDetector;
 
+fprintf('Start Extracting\n');
+
 for idx=1:length(training)
     for num=1:training(idx).Count
        img = read(training(idx),num);
@@ -55,6 +59,9 @@ for idx=1:length(training)
 %        end
     end
 end
+
+fprintf('Finish Extraction\n');
+
 %%
 save(strcat(projectName,'_features.mat'), 'trainingFeature');
 save(strcat(projectName,'_label.mat'), 'trainingLabel');
@@ -63,5 +70,6 @@ save(strcat(projectName,'_label.mat'), 'trainingLabel');
 % faceClassifier = fitcecoc(trainingFeature, trainingLabel);
 % save(strcat('classifier', projectName, '.mat'), 'faceClassifier');
 
-[model,predict] = trSVM(projectName, trainingFeature, trainingLabel);
+% [model,predict] = trSVM(projectName, trainingFeature, trainingLabel);
 
+fprintf('Done\n');
