@@ -34,24 +34,31 @@ featureCount=1;
 faceDetector = vision.CascadeObjectDetector;
 
 fprintf('Start Extracting\n');
+faceDetector = vision.CascadeObjectDetector();
 
 for idx=1:length(training)
 % for idx=1:5
     for num=1:training(idx).Count
         feature = [];
         img = read(training(idx),num);
-        img = imresize(img, [400 300]);
+        
+%         detect face ROI
+        bbox = step(faceDetector, img);
+        [~, maxIndex] = max(bbox(:,3).*bbox(:,4));
+        img = imcrop( img, bbox(maxIndex,:) );
+        
+        img = imresize(img, [400 400]);
         img = rgb2gray(img);
-        img = histeq(img);
+%         img = histeq(img);
         level = graythresh(img);
         img = im2bw(img, level);
 %============= Feature Extraction===========
 % _____HOG_____
 %         [feature, fv] = extractHOGFeatures(img, 'BlockSize', blockSize, 'CellSize', cellSize);
         [feature, fv] = extractHOGFeatures(img);
-        imshow(img); hold on
-        plot(fv);
-        pause(1);
+%         imshow(img); hold on
+%         plot(fv);
+%         pause(1);
 % _____Gabor_____
 %         for wavelength = 2.5:2.5:12.5
 %             for orientation = 0:30:150
