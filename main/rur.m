@@ -1,19 +1,27 @@
 %%
 % Get label of face
-% [faceLabel, musicLabel] = initalLabelSetting();
+[faceLabel, musicLabel] = initalLabelSetting();
 % load W_4_O_45_90_model.mat
 
-img = startCam;
-%%
-feature =[];
-wavelength = 4;
-orientation = [45 90];
-feature = gaborExtract(img, wavelength, orientation, [762 562]);
+% img = startCam;
+folder = dir('./train_KDEF/sad/*.jpg');
+for i=1:length(folder)
+img = imread(strcat('./train_KDEF/sad/', folder(i).name));
 
 %%
-label = 2;
+cellSize = [8 8];
+img = imresize(img,[400 300]);
+% feature =[];
+% wavelength = 4;
+% orientation = [45 90];
+% feature = gaborExtract(img, wavelength, orientation, [762 562]);
+feature = extractHOGFeatures(img, 'CellSize', cellSize);
+
+%%
+label = 5;
 [predicted_label, accuracy, ~] = svmpredict(double(label(1)), double(feature(1,:)), model);
-fprintf('Predict= %s\n', cell2mat(faceLabel(predicted_label)));
+% fprintf('%d of Predict= %s\n',i, cell2mat(faceLabel(predicted_label)));
 
+end
 %% 
 

@@ -22,14 +22,16 @@ valInd = randInd(trainRainge+1:end);
 option = '-t 0 -d 2 -g 2 -c 1 -e 0.1';
 model = svmtrain(double(label(trainInd)), double(feature(trainInd,:)), option);
 
-[predicted_label, accuracy, ~] = svmpredict(double(label(valInd)), double(feature(valInd,:)), model);
+save(strcat(projectName,'_model.mat'), 'model');
 
-predictedName = {};
-for idx=1:length(predicted_label)
-    predictedName{idx} = cators(1, predicted_label(idx,1));
-end
+% [predicted_label, accuracy, ~] = svmpredict(double(label(valInd)), double(feature(valInd,:)), model);
 
-[C, order] = confusionmat( double(label(valInd)), predicted_label)
+% predictedName = {};
+% for idx=1:length(predicted_label)
+%     predictedName{idx} = cators(1, predicted_label(idx,1));
+% end
+
+% [C, order] = confusionmat( double(label(valInd)), predicted_label)
 
 % C = strsplit(option, {' ','-','.'});
 % par = strcat(C{:});
