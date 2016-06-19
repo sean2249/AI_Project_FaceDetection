@@ -15,7 +15,7 @@ addpath functions
 
 %% Train
 % should you change any of the parameters below, set flag_train = 1;
-flag_train = 1;
+flag_train = 0;
 where = '.';
 folder = 'trainset';
 what = 'png';
@@ -52,7 +52,7 @@ end
 % n_all = 3+4 shapes in half resolution and n_all = 10+4 shapes in the original resolution.
 % 4 is the number of similarity eigenvectors and is always fixed.
 % Exactly the same applies for the texture parameters.
-flag_precompute = 1;
+flag_precompute = 0;
 if flag_train
     flag_precompute = 1;    
 end
@@ -109,7 +109,7 @@ folder = './tzimiro_ICCV2013_code/testset/';
 % names2 = dir('./testset/*.pts');
 names1 = dir(strcat(folder, '*.png'));
 
-gg = 100; % choose image gg to fit
+gg = 1; % choose image gg to fit
 input_image = imread(strcat(folder, names1(gg).name));
 % input_image = imread(['./testset/' names1(gg).name]);
 % pts = read_shape(['./testset/' names2(gg).name], cAAM.num_of_points);

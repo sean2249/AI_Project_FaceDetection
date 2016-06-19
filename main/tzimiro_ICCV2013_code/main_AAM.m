@@ -103,12 +103,14 @@ num_of_iter = [50 50];
 load initializations_LFPW
 
 %% get images and ground truth shapes
-names1 = dir('./testset/*.png');
-names2 = dir('./testset/*.pts');
+% names1 = dir('./testset/*.png');
+% names2 = dir('./testset/*.pts');
+names1 = dir('./ddd/*.JPG');
 
-gg = 241; % choose image gg to fit
-input_image = imread(['./testset/' names1(gg).name]);
-pts = read_shape(['./testset/' names2(gg).name], cAAM.num_of_points);
+gg = 1; % choose image gg to fit
+input_image = imread(['./ddd/' names1(gg).name]);
+% input_image = imread('AF09HAS.JPG');
+% pts = read_shape(['./testset/' names2(gg).name], cAAM.num_of_points);
 if size(input_image, 3) == 3
     input_image = double(rgb2gray(input_image));
 else
@@ -120,12 +122,79 @@ gt_s = (pts);
 face_size = (max(gt_s(:,1)) - min(gt_s(:,1)) + max(gt_s(:,2)) - min(gt_s(:,2)))/2;
 
 %% initialization
+if size(input_image, 3) == 3
+    input_image = double(rgb2gray(input_image));
+else
+    input_image = double(input_image);
+end
+
 s0 = cAAM.shape{1}.s0;
-current_shape = scl(gg)*reshape(s0, cAAM.num_of_points, 2) + repmat(trans(gg, :), cAAM.num_of_points, 1);
+current_shape = scl(2)*reshape(s0, cAAM.num_of_points, 2);
+figure;imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize', 11);
+
+%%
+
+faceDetector = vision.CascadeObjectDetector;
+bboxes = step(faceDetector, input_image);
+IFaces = insertObjectAnnotation(input_image, 'rectangle', bboxes, 'Face');
+figure, subplot(1,2,1), imshow(IFaces), title('Detected faces');
+% current_shape(:,1) = current_shape(:,1) + bboxes(
+
+%% For webcam
+% current_shape = 0.9*(current_shape);
+[imgX, imgY,~] = size(input_image);
+for i=1:2
+lengthX = abs(max(current_shape(:,1)) - min(current_shape(:,1)));
+lengthY = abs(max(current_shape(:,2))- min(current_shape(:,2)));
+
+current_shape(:,1) = current_shape(:,1) * imgX*0.67/lengthX;
+current_shape(:,2) = current_shape(:,2) * imgY*0.67/lengthY;
+
+current_shape(:,1) = current_shape(:,1) + abs(min(current_shape(:,1)));
+current_shape(:,2) = current_shape(:,2) + abs(min(current_shape(:,2)));
+
+shiftX = imgX/2-mean(current_shape(:,1));
+shiftY = imgY/2-mean(current_shape(:,2));
+faceShift = (lengthY) * 0.1;
+
+current_shape(:,1) = current_shape(:,1) + shiftX;
+current_shape(:,2) = current_shape(:,2) + shiftY + faceShift;
+
+figure; imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize', 11);
+
+end
+%% For training KDEF
+% current_shape = 0.9*(current_shape);
+[imgX, imgY,~] = size(input_image);
+for i=1:5
+lengthX = abs(max(current_shape(:,1)) - min(current_shape(:,1)));
+lengthY = abs(max(current_shape(:,2))- min(current_shape(:,2)));
+
+current_shape(:,1) = current_shape(:,1) * imgX*0.67/lengthX;
+current_shape(:,2) = current_shape(:,2) * imgY*0.67/lengthY;
+
+current_shape(:,1) = current_shape(:,1) + abs(min(current_shape(:,1)));
+current_shape(:,2) = current_shape(:,2) + abs(min(current_shape(:,2)));
+
+shiftX = imgX/2-mean(current_shape(:,1));
+shiftY = imgY/2-mean(current_shape(:,2));
+faceShift = (lengthY) * 0.1;
+
+current_shape(:,1) = current_shape(:,1) + shiftX;
+current_shape(:,2) = current_shape(:,2) + shiftY + faceShift;
+
+figure; imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize', 11);
+
+end
+
+
+%%
+current_shape = current_shape + repmat(trans(gg, :), cAAM.num_of_points, 1);
+figure;imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize', 11);
 input_image = imresize(input_image, 1/scl(gg));
 current_shape = (1/scl(gg))*(current_shape);
 % uncomment to see initialization
-% figure;imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize', 11);
+figure;imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize', 11);
 
 %% Fitting an AAM using Fast-SIC algorithm
 sc = 2.^(cAAM.scales-1);
@@ -191,7 +260,7 @@ for ii = num_of_scales_used:-1:1
 end
 
 figure;imshow(input_image, []); hold on; plot(current_shape(:,1), current_shape(:,2), '.', 'MarkerSize',11);
-current_shape = current_shape*scl(gg);
+% current_shape = current_shape*scl(gg);
 
 %% error metric used, a value of approx 0.03 shows very good fitting
 pt_pt_err1 = [];

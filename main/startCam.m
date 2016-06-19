@@ -46,7 +46,7 @@ if ~isempty(bboxes)
             if tmp>area, idx =i; area = tmp; end
         end
     end
-        idx =[ bboxes(idx,1), bboxes(idx,1)+bboxes(idx,3), bboxes(idx,2), bboxes(idx,2)+bboxes(idx,4) ] ;
+        idx =[ bboxes(idx,1), bboxes(idx,1)+bboxes(idx,3), bboxes(idx,2), bboxes(idx,2)+bboxes(idx,4)*1.08 ] ;
         imgCrop = img(idx(3):idx(4), idx(1):idx(2),:);
         subplot(1,2,2);imshow(imgCrop);
 else
