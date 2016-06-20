@@ -107,15 +107,15 @@ load initializations_LFPW
 % names2 = dir('./testset/*.pts');
 names1 = dir('./ddd/*.JPG');
 
-gg = 1; % choose image gg to fit
+gg = 3; % choose image gg to fit
 input_image = imread(['./ddd/' names1(gg).name]);
 % input_image = imread('AF09HAS.JPG');
 % pts = read_shape(['./testset/' names2(gg).name], cAAM.num_of_points);
-if size(input_image, 3) == 3
-    input_image = double(rgb2gray(input_image));
-else
-    input_image = double(input_image);
-end
+% if size(input_image, 3) == 3
+%     input_image = double(rgb2gray(input_image));
+% else
+%     input_image = double(input_image);
+% end
 
 %% ground_truth
 gt_s = (pts);
@@ -137,7 +137,11 @@ figure;imshow(input_image, []);  hold on; plot(current_shape(:,1), current_shape
 faceDetector = vision.CascadeObjectDetector;
 bboxes = step(faceDetector, input_image);
 IFaces = insertObjectAnnotation(input_image, 'rectangle', bboxes, 'Face');
-figure, subplot(1,2,1), imshow(IFaces), title('Detected faces');
+% figure, subplot(1,2,1), imshow(IFaces), title('Detected faces');
+idx =1;
+      idx =[ bboxes(idx,1), bboxes(idx,1)+bboxes(idx,3), bboxes(idx,2), bboxes(idx,2)+bboxes(idx,4)*1.1] ; % 1.08 for webcam
+        input_image = input_image(idx(3):idx(4), idx(1):idx(2),:);
+imshow(input_image)
 % current_shape(:,1) = current_shape(:,1) + bboxes(
 
 %% For webcam
@@ -148,7 +152,7 @@ lengthX = abs(max(current_shape(:,1)) - min(current_shape(:,1)));
 lengthY = abs(max(current_shape(:,2))- min(current_shape(:,2)));
 
 current_shape(:,1) = current_shape(:,1) * imgX*0.67/lengthX;
-current_shape(:,2) = current_shape(:,2) * imgY*0.67/lengthY;
+current_shape(:,2) = current_shape(:,2) * imgY*0.75/lengthY;
 
 current_shape(:,1) = current_shape(:,1) + abs(min(current_shape(:,1)));
 current_shape(:,2) = current_shape(:,2) + abs(min(current_shape(:,2)));

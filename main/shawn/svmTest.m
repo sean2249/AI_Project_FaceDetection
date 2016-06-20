@@ -21,12 +21,13 @@ img = imcrop(img, bbox(maxIndex,:));
 img = imresize(img, [400 400]);
 
 % imshow(img);
-
+%%
+img = startCam;
 img = rgb2gray(img);
 % img = histeq(img);
 level = graythresh(img);
 img = im2bw(img, level);
-imshow(img);
+figure;imshow(img);
 
 feature = extractHOGFeatures(img);
 [p,a,~]=svmpredict( cator, double(feature), model );

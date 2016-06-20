@@ -1,9 +1,14 @@
 %%
 % Get label of face
 [faceLabel, musicLabel] = initalLabelSetting();
-% load W_4_O_45_90_model.mat
+load './shawn/HOG_KDEF_model.mat'
+load './shawn/HOG_KDEF_cators.mat'
+img = startCam;
 
-% img = startCam;
+
+
+
+%%
 folder = dir('./train_KDEF/sad/*.jpg');
 for i=1:length(folder)
 img = imread(strcat('./train_KDEF/sad/', folder(i).name));
