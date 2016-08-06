@@ -4,23 +4,21 @@ function songRecommend = mood2songTitle(mood, musicClipNote, songNumber)
 
 if nargin <3, songNumber =1;end
 musicType = unique(musicClipNote(1,:));
-
-
 typeNumber = 2;
 
 switch mood(1:3)
     case 'afr' % metal/rock
-        typeChoose = [7,10];
+        typeChoose = [4,10];
     case 'ang' % metal/rock
         typeChoose = [7,10];
     case 'dis' % hiphop/metal
-        typeChoose = [5,7];
+        typeChoose = [5,1];
     case 'hap' %pop/disco
         typeChoose = [8,4];
     case 'neu' %classical/reggae
         typeChoose = [2,9];
     case 'sad' % rock/country
-        typeChoose = [10,3];
+        typeChoose = [6,3];
     case 'sur' %jazz/blue
         typeChoose = [6,1];
 end

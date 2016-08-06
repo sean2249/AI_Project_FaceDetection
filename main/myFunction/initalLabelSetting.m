@@ -1,26 +1,29 @@
-function [typeLabel, model, cators, musicClip] = initalLabelSetting()
+function [typeLabel,mood, allModel, musicClip] = initalLabelSetting(prm)
 % Default [typelabel, model, cators, musicClip] = 
 strMoodLabelFile = 'faceLabel.txt';
 strMusicLabelFile = 'musicLabel.txt';
-strModelFile = 'HOG_KDEF_model.mat';
-strCatorFile = 'HOG_KDEf_cators.mat';
-strMusicClipFile = 'songTitle.xls';
+strMusicClipFile = 'songTitle2.xls';
 
-if (exist(strMoodLabelFile)==0)
+
+% keyboard;
+
+if ~exist(prm.modelName)
+    if ~exist(prm.saveFeatureName)
+        featureExtraction(prm);
+    end
+    allModel = trainModel(prm);
+else
+   load(prm.modelName); 
+end
+if ~exist(strMoodLabelFile)
     strMoodLabelFile = input('Enter faceLabel File Name:','s');
 end
-if (exist(strModelFile)==0)
-    strModelFile = input('Enter Model File name: ', 's');
-end
-if (exist(strCatorFile)==0)
-    strCatorFile = input('Enter Cator File name: ', 's');
-end
-if (exist(strMusicClipFile)==0)
+if ~exist(strMusicClipFile)
    strMusicClipFile = input('Enter Music Clip name: ', 's'); 
 end
 
-strMusicClipFile = 'songTitle.xls';
-if (exist(strMusicClipFile)==0)
+% strMusicClipFile = 'songTitle.xls';
+if ~exist(strMusicClipFile)
    strMusicClipFile = input('Enter Music Clip name: ', 's'); 
 end
 
@@ -35,25 +38,17 @@ music = musicLabel{1,1};
 fclose(fid);
 typeLabel = {mood,music};
 
-model = load (strModelFile);
-model = model.model;
-
-cators = load (strCatorFile);
-cators = cators.cators;
-
 [~, musicClipNote, ~] = xlsread(strMusicClipFile);
 currentType = cell2mat(musicClipNote(1,1));
 typeCnt =1; idx = 1;
 for cnt=1:length(musicClipNote)
    if (~ strcmp(cell2mat(musicClipNote(cnt,1)), currentType))
-%        musicClip ={musicClip;tmp}; 
        musicClip{1,typeCnt} = (currentType);
        musicClip{2,typeCnt} = ttmp;
        ttmp = {};
        idx = 1; 
        typeCnt = typeCnt + 1;
        currentType = (cell2mat(musicClipNote(cnt,1)));
-   else
    end
    ttmp{idx,1} = cell2mat(musicClipNote(cnt,2));
    ttmp{idx,2} = cell2mat(musicClipNote(cnt,3));
