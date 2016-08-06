@@ -6,10 +6,11 @@ addpath('./GTZAN')
 
 prm.imagePath = './train_KDEF';   
 prm.saveFeatureName = '20160806_hog.mat';
-prm.modelName = 'HOG_KDEF_model_2.mat';
+prm.modelName = 'HOG_KDEF_model_3.mat';
 prm.command = '-s 0 -t 2 -c 1 -b 1 ';
-prm.validation = 20;
+prm.validation = 4;
 
+% trainModel(prm);
 [typeLabel,cators, allModel, musicClipNote] = initalLabelSetting(prm);
 
 %% Get image 

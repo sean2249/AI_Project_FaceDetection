@@ -1,61 +1,22 @@
-### Motivation
-: 
+#### AI final project  Team 21 R漱漱壹 
+### Mood Player 
+Team Members
+: Lee ChiWei, Kuo , Lin
 
-### Problem
-: * Face-Detection with mood and individual 
-* Recommend music to user
+Motivation & Backgroud
+: You listen music everyday, but everytime you waste time on selecting the playlist.
+If there is a guy knows your mood, recommend the best songlist for you. How good it would be.
 
-## Face Mood 
-> * afraid 
->* angry 
->* disgusted 
->* happy 
->* neural 
->* sad 
->* surprised
+Problem
+: Webcam capture image -> Face detector ROI -> Classify the mood -> Output the songlist.
 
-## Music Label 
-> * Blue
-> * Classical
-> * Country
-> * Disco
-> * Hiphop
-> * Jazz
-> * Metal
-> * Pop
-> * Reggae
-> * Rock
+Solution 
+: FaceDetector trainingCascade, HOG, Gabor, AAM, SVM, music genre classification.
+	
+Results
+: Validation rate is 80-90%.
+Build a system which can capture user's mood and output two type of recommended song.
 
-### Solution
-: #####Part1 Train Mood
->Use HOG and Gabor for feature extraction
->SVM to train model
-
-: #####Part2 Label music 
->Classification of music type
->Use lab tool to classify
-
-: #####Part3: Combine 1,2
->Real-time system to play music
-
-### Result
-: #####Part1    
->HOG accuracy up-to 85-90%
->Gabor accuracy is much lower
-
-: #####Part2
->Get 100 songs for labeling 
->Each match the face-mood label
-
-: #####Part3
->Use webcam to detect current face-img to play music
-
-### Ref
-: #####Dataset
->faceDetection KDEF
->musicGenre Lab + Youtube
-
-
-
-
-
+Ref
+: MATLAB extractHOGFeature, MATLAB Vision toolbox- cascadeObjectDetector, 
+tzimiro_ICCV2013_code
