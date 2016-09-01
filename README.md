@@ -3,7 +3,7 @@
 
 #### Team Members:
 > Lee ChiWei, Kuo , Lin    
-![member](http://i.imgur.com/H7FdWuw.png)
+![member](http://i.imgur.com/Vlekywa.png)
 
 #### Motivation & Backgroud:
 > You listen music everyday, but everytime you waste time on selecting the playlist.
