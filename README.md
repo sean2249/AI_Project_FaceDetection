@@ -3,20 +3,20 @@
 
 #### Team Members:
 Lee ChiWei, Kuo , Lin
-[!Alt text](http://i.imgur.com/H7FdWuw)
+![member](http://i.imgur.com/H7FdWuw)
 
 #### Motivation & Backgroud:
 You listen music everyday, but everytime you waste time on selecting the playlist.
 If there is a system knows your mood, recommend the best songlist for you. 
 How good it would be!!!
-[!Alt text](http://i.imgur.com/9iDIg5b.png)
+![mood](http://i.imgur.com/9iDIg5b.png)
 
 #### Problem:
 Webcam capture image -> Face detector ROI -> Classify the mood -> Output the songlist which is match the corresponding mood.
 
 #### Solution: 
 FaceDetector trainingCascade, HOG, Gabor, AAM, SVM, music genre classification.
-[!Alt text](http://i.imgur.com/VDJpmDs.png)
+![Demo](http://i.imgur.com/VDJpmDs.png)
 	
 #### Results:
 Validation rate is 80-90%.
